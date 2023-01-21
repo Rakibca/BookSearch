@@ -10,7 +10,7 @@ const {
 
 //const { protect } = require("../middleware/authMiddleware");
 
-//router.route("/").get(protect, getBooks).post(protect, setBook);
-//router.route("/:id").delete(protect, deleteBook).put(protect, updateBook);
+router.route("/").get(getBooks).post(setBook);
+router.route("/:id").delete(deleteBook).put(updateBook);
 
 module.exports = router;

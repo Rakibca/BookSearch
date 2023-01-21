@@ -1,21 +1,14 @@
-// const mongoose = require("mongoose");
-// const config = require("config");
-// const db = config.get(
-//   mongodb+srv://rakib:test1234@cluster0.jl4blzl.mongodb.net/?retryWrites=true&w=majority
-// );
+const mongoose = require("mongoose");
 
-// const connectDB = async () => {
-//   try {
-//     mongoose.set("strictQuery", true);
-//     await mongoose.connect(db, {
-//       useNewUrlParser: true,
-//     });
+const connectDB = async () => {
+  try {
+    const conn = await mongoose.connect(process.env.MONGO_URI);
 
-//     console.log("MongoDB is Connected...");
-//   } catch (err) {
-//     console.error(err.message);
-//     process.exit(1);
-//   }
-// };
+    console.log(`MongoDB Connected: ${conn.connection.host}`.yellow.underline);
+  } catch (error) {
+    console.log(error);
+    process.exit(1);
+  }
+};
 
-// module.exports = connectDB;
+module.exports = connectDB;

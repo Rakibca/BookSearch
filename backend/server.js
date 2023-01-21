@@ -5,11 +5,12 @@ const connectDB = require("./config/db");
 const port = process.env.PORT || 5000;
 const colors = require("colors");
 const path = require("path");
-//const cors = require("cors");
-
-
-connectDB(); // Connect to database
+const cors = require("cors");
 const app = express();
+
+
+connectDB(); // Connect to mongoDB database
+app.use(cors({ origin: true, credentials: true }));
 
 // init Middleware
 app.use(express.json());
@@ -19,7 +20,7 @@ app.use("/api/books", require('./routes/bookRoutes'));
 //app.use("/api/users", require("./routes/userRoutes"));
 
 
-//app.use(cors({ origin: true, credentials: true }));
+
 
 
 // Serve the frontend

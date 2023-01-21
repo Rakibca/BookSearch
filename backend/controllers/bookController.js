@@ -20,10 +20,17 @@ const getBooks = asyncHandler(async (req, res) => {
 // @desc    Get a single book by id
 // @route   GET /api/books/:id
 // @access  Private
-// const getBooks = asyncHandler(async (req, res) => {
-//   const books = await Book.find({ user: req.user.id });
-//   res.status(200).json(books);
-// });
+const getOneBook = asyncHandler(async (req, res) => {
+  const book = await Book.findById(req.params.id);
+  if (!book) {
+    res.status(400);
+    throw new Error("Book not found with this ID");
+  }
+  const onebook = await Book.findById(req.params.id);
+  //const books = await Book.find({ user: req.user.id });
+  //res.status(200).json({ message: `Update a book ${req.params.id}` });
+  res.status(200).json(onebook);
+});
 
 ///////////////////////////////////////////////////////////////
 
@@ -57,7 +64,7 @@ const updateBook = asyncHandler(async (req, res) => {
   const book = await Book.findById(req.params.id);
   if (!book) {
     res.status(400);
-    throw new Error("Book not found");
+    throw new Error("There is no book to update with this ID");
   }
   const updatedBook = await Book.findByIdAndUpdate(req.params.id, req.body, {
     new: true,
@@ -76,7 +83,7 @@ const deleteBook = asyncHandler(async (req, res) => {
   const book = await Book.findById(req.params.id);
   if (!book) {
     res.status(400);
-    throw new Error("Book not found");
+    throw new Error("There is no book to delete with this ID");
   }
   //const books = await Book.find({ user: req.user.id });
   await book.remove();
@@ -88,6 +95,7 @@ const deleteBook = asyncHandler(async (req, res) => {
 
 module.exports = {
   getBooks,
+  getOneBook,
   setBook,
   updateBook,
   deleteBook,

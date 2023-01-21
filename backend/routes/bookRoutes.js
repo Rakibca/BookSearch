@@ -3,6 +3,7 @@ const router = express.Router();
 
 const {
   getBooks,
+  getOneBook,
   setBook,
   updateBook,
   deleteBook,
@@ -11,6 +12,6 @@ const {
 //const { protect } = require("../middleware/authMiddleware");
 
 router.route("/").get(getBooks).post(setBook);
-router.route("/:id").delete(deleteBook).put(updateBook);
+router.route("/:id").get(getOneBook).put(updateBook).delete(deleteBook);
 
 module.exports = router;

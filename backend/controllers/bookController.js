@@ -1,7 +1,7 @@
 const asyncHandler = require("express-async-handler");
 
 const Book = require("../models/bookModel");
-//const User = require("../models/userModel");
+const User = require("../models/userModel");
 
 ///////////////////////////////////////////////////////////////
 
@@ -9,8 +9,7 @@ const Book = require("../models/bookModel");
 // @route   GET /api/books
 // @access  Private
 const getBooks = asyncHandler(async (req, res) => {
-  const books = await Book.find();
-  //const books = await Book.find({ user: req.user.id });
+  const books = await Book.find({ user: req.user.id });
   //res.status(200).json({ message: "Get all books" });
   res.status(200).json(books);
 });
@@ -27,8 +26,7 @@ const getOneBook = asyncHandler(async (req, res) => {
     throw new Error("Book not found with this ID");
   }
   const onebook = await Book.findById(req.params.id);
-  //const books = await Book.find({ user: req.user.id });
-  //res.status(200).json({ message: `Update a book ${req.params.id}` });
+  //res.status(200).json({ message: `Get a book ${req.params.id}` });
   res.status(200).json(onebook);
 });
 
@@ -49,8 +47,8 @@ const setBook = asyncHandler(async (req, res) => {
     description: req.body.description,
     published_date: req.body.published_date,
     publisher: req.body.publisher,
+    user: req.user.id,
   });
-  //const books = await Book.find({ user: req.user.id });
   //res.status(200).json({ message: "Set a single book" });
   res.status(200).json(book);
 });
@@ -66,10 +64,22 @@ const updateBook = asyncHandler(async (req, res) => {
     res.status(400);
     throw new Error("There is no book to update with this ID");
   }
+
+  const user = await User.findById(req.user.id);
+  // Check for user
+  if (!user) {
+    res.status(401);
+    throw new Error("No user found");
+  }
+  // Make sure the logged-in user matches the user's book
+  if (book.user.toString() !== user.id) {
+    res.status(401);
+    throw new Error("User not authorized to update this book");
+  }
+
   const updatedBook = await Book.findByIdAndUpdate(req.params.id, req.body, {
     new: true,
   });
-  //const books = await Book.find({ user: req.user.id });
   //res.status(200).json({ message: `Update a book ${req.params.id}` });
   res.status(200).json(updatedBook);
 });
@@ -85,7 +95,19 @@ const deleteBook = asyncHandler(async (req, res) => {
     res.status(400);
     throw new Error("There is no book to delete with this ID");
   }
-  //const books = await Book.find({ user: req.user.id });
+
+  const user = await User.findById(req.user.id);
+  // Check for user
+  if (!user) {
+    res.status(401);
+    throw new Error("No user found");
+  }
+  // Make sure the logged-in user matches the user's book
+  if (book.user.toString() !== user.id) {
+    res.status(401);
+    throw new Error("User not authorized to update this book");
+  }
+
   await book.remove();
   //res.status(200).json({ message: `Delete a book ${req.params.id}` });
   res.status(200).json({ id: req.params.id });

@@ -20,9 +20,6 @@ app.use("/api/books", require('./routes/bookRoutes'));
 app.use("/api/users", require("./routes/userRoutes"));
 
 
-
-
-
 // Serve the frontend
 // if (process.env.NODE_ENV === 'production') {
 //   app.use(express.static(path.join(__dirname, '../frontend/build')));

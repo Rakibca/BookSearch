@@ -62,7 +62,7 @@ const updateBook = asyncHandler(async (req, res) => {
   const book = await Book.findById(req.params.id);
   if (!book) {
     res.status(400);
-    throw new Error("There is no book to update with this ID");
+    throw new Error("There is no book to update with this book ID");
   }
 
   const user = await User.findById(req.user.id);
@@ -93,7 +93,7 @@ const deleteBook = asyncHandler(async (req, res) => {
   const book = await Book.findById(req.params.id);
   if (!book) {
     res.status(400);
-    throw new Error("There is no book to delete with this ID");
+    throw new Error("There is no book to delete with this book ID");
   }
 
   const user = await User.findById(req.user.id);

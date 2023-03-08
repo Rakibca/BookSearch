@@ -1,24 +1,26 @@
-import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
-import "./App.css";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+//import { ToastContainer } from "react-toastify";
+//import react-toastify/dist/ReactToastify.css";
+import Header from "./components/Header";
+import Dashboard from "./pages/Dashboard";
+import Login from "./pages/Login";
+import Register from "./pages/Register";
 
-import ShowBookList from "./components/ShowBookList";
-import ShowBookDetails from "./components/ShowBookDetails";
-import CreateBook from "./components/CreateBook";
-import UpdateBookInfo from "./components/UpdateBookInfo";
-
-const App = () => {
+function App() {
   return (
-    <Router>
-      <div>
-        <Routes>
-          <Route exact path="/" element={<ShowBookList />} />
-          <Route path="/show-book/:id" element={<ShowBookDetails />} />
-          <Route path="/create-book" element={<CreateBook />} />
-          <Route path="/edit-book/:id" element={<UpdateBookInfo />} />
-        </Routes>
-      </div>
-    </Router>
+    <>
+      <Router>
+        <div className="=container">
+          <Header />
+          <Routes>
+            <Route path="/" element={<Dashboard />} />
+            <Route path="/login" element={<Login />} />
+            <Route path="/register" element={<Register />} />
+          </Routes>
+        </div>
+      </Router>
+    </>
   );
-};
+}
 
 export default App;

@@ -65,14 +65,15 @@ const updateBook = asyncHandler(async (req, res) => {
     throw new Error("There is no book to update with this book ID");
   }
 
-  const user = await User.findById(req.user.id);
+  //const user = await User.findById(req.user.id);
+
   // Check for user
-  if (!user) {
+  if (!req.user) {
     res.status(401);
     throw new Error("No user found");
   }
   // Make sure the logged-in user matches the user's book
-  if (book.user.toString() !== user.id) {
+  if (book.user.toString() !== req.user.id) {
     res.status(401);
     throw new Error("User not authorized to update this book");
   }
@@ -96,14 +97,15 @@ const deleteBook = asyncHandler(async (req, res) => {
     throw new Error("There is no book to delete with this book ID");
   }
 
-  const user = await User.findById(req.user.id);
+  //const user = await User.findById(req.user.id);
+
   // Check for user
-  if (!user) {
+  if (!req.user) {
     res.status(401);
     throw new Error("No user found");
   }
   // Make sure the logged-in user matches the user's book
-  if (book.user.toString() !== user.id) {
+  if (book.user.toString() !== req.user.id) {
     res.status(401);
     throw new Error("User not authorized to update this book");
   }
